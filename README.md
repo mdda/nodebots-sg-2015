@@ -8,8 +8,7 @@ International Nodebots Day in Singapore (2015)
 
 Need MicroSD for : (https://fedoraproject.org/wiki/Architectures/ARM/F22/Installation#For_the_BeagleBone_.28_Black_.26_White_.29)
 
-Found a spare MicroSD card :: 
-/dev/sdh1
+Found a spare MicroSD card that has a readable (and ready to be deleted) partition at ```/dev/sdh1```.
 
 Download spin (XFCE is my spin-of-choice) from : 
 * http://download.fedoraproject.org/pub/fedora/linux/releases/22/Images/armhfp/
@@ -17,8 +16,115 @@ Download spin (XFCE is my spin-of-choice) from :
 
 ```
 wget http://ftp.yz.yamagata-u.ac.jp/pub/linux/fedora/linux/releases/22/Images/armhfp/Fedora-Xfce-armhfp-22-3-sda.raw.xz
+# Takes ~15mins
+
+# write the image to the media
+[root@PC ~]# TYPE=Xfce
+[root@PC ~]# MEDIA=/dev/sdg
+[root@PC ~]# xzcat Fedora-$TYPE-armhfp-22-3-sda.raw.xz | sudo dd of=$MEDIA; sync
+# Takes ~20 mins (!)
+9265152+0 records in
+9265152+0 records out
+4743757824 bytes (4.7 GB) copied, 1057.85 s, 4.5 MB/s
+
+
+
+# After writing the image, read the new partition table and mount the root partition 
+[root@PC ~]# partprobe $MEDIA
+[root@PC ~]# parted $MEDIA
+GNU Parted 3.2
+Using /dev/sdg
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+(parted) print
+Model: Mass Storage Device (scsi)
+Disk /dev/sdg: 15.9GB
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+Disk Flags: 
+
+Number  Start   End     Size    Type     File system     Flags
+ 1      1049kB  513MB   512MB   primary  ext3
+ 2      513MB   1025MB  512MB   primary  linux-swap(v1)
+ 3      1025MB  4525MB  3500MB  primary  ext4
+
+(parted) quit                                             
+
+[root@PC ~]# PART=/dev/sdg1
+[root@PC ~]# mkdir /tmp/root; mount $PART /tmp/root; ls /tmp/root 
+boot.cmd                                                 initrd-plymouth.img
+boot.cmd.old                                             klist.txt
+boot.scr                                                 lost+found/
+boot.scr.old                                             System.map-4.0.4-301.fc22.armv7hl
+config-4.0.4-301.fc22.armv7hl                            uImage
+dtb-4.0.4-301.fc22.armv7hl/                              uImage-4.0.4-301.fc22.armv7hl
+extlinux/                                                uInitrd
+grub/                                                    uInitrd-4.0.4-301.fc22.armv7hl
+grub2/                                                   vmlinuz-0-rescue-f3a963abba20421abf5157c972af9415
+initramfs-0-rescue-f3a963abba20421abf5157c972af9415.img  vmlinuz-4.0.4-301.fc22.armv7hl
+initramfs-4.0.4-301.fc22.armv7hl.img                     .vmlinuz-4.0.4-301.fc22.armv7hl.hmac
+# This is the wrong one...  we want to mount the '/' of the SD card on /tmp/root
+[root@PC ~]# umount /tmp/root
+
+[root@PC ~]# PART=/dev/sdg3
+[root@PC ~]# mkdir /tmp/root; mount $PART /tmp/root; ls /tmp/root 
+ls /tmp/root/
+bin  boot  dev  etc  home  lib  lost+found  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+## This is the right answer...
+
+## now to write the correct U-Boot for the Hardware :
+# For the BeagleBone ( Black & White ) 
+
+[root@PC ~]# dd if=/tmp/root/usr/share/uboot/beaglebone/MLO of=$MEDIA count=1 seek=1 conv=notrunc bs=128k
+0+1 records in
+0+1 records out
+81292 bytes (81 kB) copied, 0.00631184 s, 12.9 MB/s
+
+[root@PC ~]# dd if=/tmp/root/usr/share/uboot/beaglebone/u-boot.img of=$MEDIA count=2 seek=1 conv=notrunc bs=384k
+1+1 records in
+1+1 records out
+406492 bytes (406 kB) copied, 0.0211522 s, 19.2 MB/s
+```
+Media *should* now be ready to boot on the BeagleBone.  Insert into the device and boot.  
+
+To boot the Fedora 22 version of U-Boot on MicroSD you will need to hold the "User Boot" button (located near the MicroSD slot) when the device is powered on. 
+
+*BUT* If you have no Serial cable... :: Need to do the following (from bottom of page)
+
+*STILL UNDER DEVELOPMENT*
+```
+USER=myusername
+rm /tmp/root/etc/systemd/system/graphical.target.wants/initial-setup-graphical.service
+rm /tmp/root/etc/systemd/system/multi-user.target.wants/initial-setup-text.service
+mkdir /tmp/root/root/.ssh/
+cat /home/$USER/.ssh/id_rsa.pub >> /tmp/root/root/.ssh/authorized_keys
+chmod -R u=rwX,o=,g= /tmp/root/root/.ssh/
+
+umount /tmp/root
+```
+*STILL UNDER DEVELOPMENT*
+
+Now, insert the MicroSD into the slot (gold teeth end up facing away from the board surface), and holding down the little switch on the front of the card (in the corner near the MicroSD slot), apply power.
+
+Initially, the user lights will be off (
+
+#### Copying Fedora U-Boot to eMMC on the Beaglebone Black
+
+To Copy the Fedora U-Boot to the eMMC on the Beaglebone Black execute the following steps:
+*STILL UNDER DEVELOPMENT*
 
 ```
+# mount emmc boot partition 
+mkdir /tmp/emmc; mount /dev/mmcblk1p1 /tmp/emmc
+
+# optionally back up original U-Boot
+mkdir /tmp/emmc/orig-uboot; cp /tmp/emmc/{MLO,u-boot.img} /tmp/emmc/orig-uboot/
+
+# copy Fedora U-Boot
+cp /usr/share/uboot/beaglebone/{MLO,u-boot.img} /tmp/emmc/
+```
+
+Once completed you will no longer need to press the "User Boot" button to select the Fedora U-Boot. 
+
 
 ### Bonescript
 
@@ -33,6 +139,8 @@ version = 00A5
 serialNumber = 4134BBBK1100
 bonescript = 0.2.4
 ```
+
+### Board fundamentals
 
 ```
 USER@PC $ ssh root@192.168.7.2 ::
