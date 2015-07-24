@@ -107,24 +107,26 @@ To log in to the root account without completing the initial-setup you will need
 Also, the default settings are for the Fedora installation to want to start networking with DHCP.  If it is connected to your PC via USB, this isn't so convenient (unless you set up a network bridge to your existing DHCP provider, or set up dnsmasq locally, for instance).  So, instead, provide a static route in ```/tmp/root/``` :
 
 ```
-[root@PC ~]# cat > /tmp/root/etc/sysconfig/network-scripts/ifcfg-Static_.1.19 <<EOF
+[root@PC ~]# cat > /tmp/root/etc/sysconfig/network-scripts/ifcfg-Static_.7.2 <<EOF
+NAME="Static .7.2"
 TYPE=Ethernet
+DEVICE=usb0
 BOOTPROTO=none
-IPADDR0=192.168.1.19
+IPADDR0=192.168.7.2
 PREFIX0=24
-GATEWAY0=192.168.1.1
-DNS1=192.168.1.1
+GATEWAY0=192.168.7.1
+DNS1=192.168.7.1
 DEFROUTE=yes
-IPV4_FAILURE_FATAL=no
-IPV6INIT=yes
-IPV6_AUTOCONF=yes
-IPV6_DEFROUTE=yes
-IPV6_FAILURE_FATAL=no
-NAME="Static .1.19"
-UUID=e4d2eac2-aec6-4725-afb4-c508d84344bf
 ONBOOT=yes
-IPV6_PEERDNS=yes
-IPV6_PEERROUTES=yes
+UUID=e4d2eac2-aec6-4725-afb4-c508d84344bf
+IPV4_FAILURE_FATAL=no
+
+#IPV6INIT=yes
+#IPV6_AUTOCONF=yes
+#IPV6_DEFROUTE=yes
+#IPV6_FAILURE_FATAL=no
+#IPV6_PEERDNS=yes
+#IPV6_PEERROUTES=yes
 EOF
 ```
 
