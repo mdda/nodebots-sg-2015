@@ -104,7 +104,22 @@ To log in to the root account without completing the initial-setup you will need
 [root@PC ~]# nano /tmp/root/etc/passwd
 ```
 
+## WORK-IN-PROGRESS
+
+* http://askubuntu.com/questions/380810/internet-over-usb-on-beaglebone-black
+* http://shallowsky.com/blog/hardware/flashing-beaglebone-black.html
+* http://shallowsky.com/blog/hardware/talking-to-beaglebone.html
+* http://blog.nixpanic.net/2011/03/configuring-beagleboard-to-have-network.html
+
+Problem identified on (http://unix.stackexchange.com/questions/180547/connecting-linux-device-to-a-tablet-via-usb) :
+```
+[root@beaglebone ~]# cat /boot/config-$(uname -r) | grep  CONFIG_USB_ETH
+# CONFIG_USB_ETH is not set
+```
+
 Also, the default settings are for the Fedora installation to want to start networking with DHCP.  If it is connected to your PC via USB, this isn't so convenient (unless you set up a network bridge to your existing DHCP provider, or set up dnsmasq locally, for instance).  So, instead, provide a static route in ```/tmp/root/``` :
+
+
 
 ```
 [root@PC ~]# cat > /tmp/root/etc/sysconfig/network-scripts/ifcfg-Static_.7.2 <<EOF
@@ -130,6 +145,14 @@ IPV4_FAILURE_FATAL=no
 EOF
 ```
 
+(side note, on the BeagleBoneBlack, when booted in its default distribution 'Angstrom', the MicroSD card is mounted automatically, and the networking file is in : ```/media/__/etc/sysconfig/network-scripts/```, where it can be edited/overwritten without having to take out the MicroSD and switch machines, etc).
+
+Also, to avoid endless frustrations, switch off ```SELINUX``` (can be renabled later, once everything is humming along): 
+```
+[root@PC ~]# nano /tmp/root/etc/selinux/config
+# Change 'enforcing' to 'disabled'
+```
+
 Finally, (with fingers crossed that the above steps worked...) :
 
 ```
@@ -141,6 +164,13 @@ Finally, (with fingers crossed that the above steps worked...) :
 With the power off, insert the MicroSD into the slot (gold teeth end up facing away from the board surface), and holding down the little switch on the front of the card (in the corner near the MicroSD slot), apply power, then release the little switch.
 
 Initially, the user lights will be off, but after 30-45secs, user2 will start to some some flickering.  Not clear what that indicates yet...
+
+#### Post-boot installations
+
+```
+hostname beaglebone
+dnf install -y joe
+```
 
 #### Copying Fedora U-Boot to eMMC on the Beaglebone Black
 
