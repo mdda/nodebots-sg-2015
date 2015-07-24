@@ -107,7 +107,7 @@ To log in to the root account without completing the initial-setup you will need
 Also, the default settings are for the Fedora installation to want to start networking with DHCP.  If it is connected to your PC via USB, this isn't so convenient (unless you set up a network bridge to your existing DHCP provider, or set up dnsmasq locally, for instance).  So, instead, provide a static route in ```/tmp/root/``` :
 
 ```
-cat << EOF
+[root@PC ~]# cat > /tmp/root/etc/sysconfig/network-scripts/ifcfg-Static_.1.19 <<EOF
 TYPE=Ethernet
 BOOTPROTO=none
 IPADDR0=192.168.1.19
@@ -125,12 +125,13 @@ UUID=e4d2eac2-aec6-4725-afb4-c508d84344bf
 ONBOOT=yes
 IPV6_PEERDNS=yes
 IPV6_PEERROUTES=yes
-EOF > /tmp/root/etc/sysconfig/network-scripts/ifcfg-Static_.1.19
+EOF
 ```
 
+Finally, (with fingers crossed that the above steps worked...) :
 
 ```
-umount /tmp/root
+[root@PC ~]# umount /tmp/root
 ```
 
 #### Insert into the device and boot.  
