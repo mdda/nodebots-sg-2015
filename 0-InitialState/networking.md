@@ -1,5 +1,36 @@
+## Understanding the default (very nice) networking stack
+
+```
+[andrewsm@square sketchpad]$ ssh root@192.168.7.2
+Debian GNU/Linux 7
+
+BeagleBoard.org BeagleBone Debian Image 2014-03-27
+
+Support/FAQ: http://elinux.org/Beagleboard:BeagleBoneBlack_Debian
+Last login: Thu Mar 27 16:45:16 2014 from square.local
+
+root@beaglebone:~# uname -a
+Linux beaglebone 3.8.13-bone43 #1 SMP Wed Mar 26 14:21:39 UTC 2014 armv7l GNU/Linux
+```
+
+### What modules are being used ?
+
+```
+root@beaglebone:~# lsmod 
+Module                  Size  Used by
+g_multi                47670  2 
+libcomposite           14299  1 g_multi
+mt7601Usta            601404  0 
+```
+
+
+### So how are the interfaces brought up ?
+```
 root@beaglebone:~# more /etc/network/
 if-down.d/      if-post-down.d/ if-pre-up.d/    if-up.d/        interfaces      run/            
+```
+
+```
 root@beaglebone:~# more /etc/network/interfaces 
 # This file describes the network interfaces available on your system
 # and how to activate them. For more information, see interfaces(5).
@@ -29,6 +60,9 @@ iface usb0 inet static
     netmask 255.255.255.0
     network 192.168.7.0
     gateway 192.168.7.1
+```
+
+```
 root@beaglebone:~# ifconfig 
 eth0      Link encap:Ethernet  HWaddr 7c:66:9d:53:9f:f1  
           UP BROADCAST MULTICAST  MTU:1500  Metric:1
@@ -55,8 +89,12 @@ usb0      Link encap:Ethernet  HWaddr c6:18:31:e0:ce:e5
           TX packets:331 errors:0 dropped:0 overruns:0 carrier:0
           collisions:0 txqueuelen:1000 
           RX bytes:28806 (28.1 KiB)  TX bytes:64135 (62.6 KiB)
+```
 
 
+Miniature DHCP server :
+
+```
 
  1157 ?        Ss     0:00 /usr/sbin/udhcpd -S /etc/udhcpd.conf
 
@@ -67,3 +105,4 @@ interface  usb0
 max_leases 1
 option subnet 255.255.255.252
 
+```

@@ -121,7 +121,11 @@ Ah, BUT (having seen [configfs](https://wiki.tizen.org/wiki/USB/Linux_USB_Layers
 [root@localhost network-scripts]# cat /boot/config-$(uname -r) | grep CONFIGFS_FS
 CONFIG_CONFIGFS_FS=y
 ```
-So, perhaps there is a possibility of making this work!  : https://wiki.tizen.org/wiki/USB/Linux_USB_Layers/Configfs_Composite_Gadget/Usage_eq._to_g_ether.ko
+So, perhaps there is a possibility of making this work!  : 
+
+* https://wiki.tizen.org/wiki/USB/Linux_USB_Layers/Configfs_Composite_Gadget/Usage_eq._to_g_ether.ko
+* http://www.spinics.net/lists/linux-usb/msg76388.html
+
 
 ```
 ```
