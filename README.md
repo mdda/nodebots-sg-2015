@@ -21,13 +21,11 @@ wget http://ftp.yz.yamagata-u.ac.jp/pub/linux/fedora/linux/releases/22/Images/ar
 # write the image to the media
 [root@PC ~]# TYPE=Xfce
 [root@PC ~]# MEDIA=/dev/sdg
-[root@PC ~]# xzcat Fedora-$TYPE-armhfp-22-3-sda.raw.xz | sudo dd of=$MEDIA; sync
-# Takes ~20 mins (!)
+[root@PC ~]# xzcat Fedora-$TYPE-armhfp-22-3-sda.raw.xz | dd of=$MEDIA; sync
+# Takes ~18 mins (!)
 9265152+0 records in
 9265152+0 records out
 4743757824 bytes (4.7 GB) copied, 1057.85 s, 4.5 MB/s
-
-
 
 # After writing the image, read the new partition table and mount the root partition 
 [root@PC ~]# partprobe $MEDIA
@@ -50,7 +48,7 @@ Number  Start   End     Size    Type     File system     Flags
 (parted) quit                                             
 
 [root@PC ~]# PART=/dev/sdg1
-[root@PC ~]# mkdir /tmp/root; mount $PART /tmp/root; ls /tmp/root 
+[root@PC ~]# mkdir -p /tmp/root; mount $PART /tmp/root; ls /tmp/root 
 boot.cmd                                                 initrd-plymouth.img
 boot.cmd.old                                             klist.txt
 boot.scr                                                 lost+found/
@@ -67,7 +65,6 @@ initramfs-4.0.4-301.fc22.armv7hl.img                     .vmlinuz-4.0.4-301.fc22
 
 [root@PC ~]# PART=/dev/sdg3
 [root@PC ~]# mkdir /tmp/root; mount $PART /tmp/root; ls /tmp/root 
-ls /tmp/root/
 bin  boot  dev  etc  home  lib  lost+found  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
 ## This is the right answer...
 
@@ -84,28 +81,26 @@ bin  boot  dev  etc  home  lib  lost+found  media  mnt  opt  proc  root  run  sb
 1+1 records out
 406492 bytes (406 kB) copied, 0.0211522 s, 19.2 MB/s
 ```
-Media *should* now be ready to boot on the BeagleBone.  Insert into the device and boot.  
+*If* you have a screen and/or a serial console interface, the media should now be ready to boot on the BeagleBone.  
 
-To boot the Fedora 22 version of U-Boot on MicroSD you will need to hold the "User Boot" button (located near the MicroSD slot) when the device is powered on. 
+But, if (like me), you're only connected by USB, you need to tell ```systemd``` not to wait for the screen prompts to be answered  (this is from the bottom of the Fedora instructions) :
 
-*BUT* If you have no Serial cable... :: Need to do the following (from bottom of page)
-
-*STILL UNDER DEVELOPMENT*
 ```
 USER=myusername
-rm /tmp/root/etc/systemd/system/graphical.target.wants/initial-setup-graphical.service
-rm /tmp/root/etc/systemd/system/multi-user.target.wants/initial-setup-text.service
+rm -f /tmp/root/etc/systemd/system/graphical.target.wants/initial-setup-graphical.service
+rm -f /tmp/root/etc/systemd/system/multi-user.target.wants/initial-setup-text.service
 mkdir /tmp/root/root/.ssh/
 cat /home/$USER/.ssh/id_rsa.pub >> /tmp/root/root/.ssh/authorized_keys
 chmod -R u=rwX,o=,g= /tmp/root/root/.ssh/
 
 umount /tmp/root
 ```
-*STILL UNDER DEVELOPMENT*
 
-Now, insert the MicroSD into the slot (gold teeth end up facing away from the board surface), and holding down the little switch on the front of the card (in the corner near the MicroSD slot), apply power.
+#### Insert into the device and boot.  
 
-Initially, the user lights will be off (
+With the power off, insert the MicroSD into the slot (gold teeth end up facing away from the board surface), and holding down the little switch on the front of the card (in the corner near the MicroSD slot), apply power, then release the little switch.
+
+Initially, the user lights will be off, but after 30-45secs, user2 will start to some some flickering.  Not clear what that indicates yet...
 
 #### Copying Fedora U-Boot to eMMC on the Beaglebone Black
 
