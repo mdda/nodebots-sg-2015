@@ -104,20 +104,36 @@ To log in to the root account without completing the initial-setup you will need
 [root@PC ~]# nano /tmp/root/etc/passwd
 ```
 
-## WORK-IN-PROGRESS
+### Getting Ethernet over USB on Fedora
 
 * http://askubuntu.com/questions/380810/internet-over-usb-on-beaglebone-black
 * http://shallowsky.com/blog/hardware/flashing-beaglebone-black.html
 * http://shallowsky.com/blog/hardware/talking-to-beaglebone.html
 * http://blog.nixpanic.net/2011/03/configuring-beagleboard-to-have-network.html
 
-Problem identified on (http://unix.stackexchange.com/questions/180547/connecting-linux-device-to-a-tablet-via-usb) :
+HUGE problem identified on (http://unix.stackexchange.com/questions/180547/connecting-linux-device-to-a-tablet-via-usb) :
 ```
 [root@beaglebone ~]# cat /boot/config-$(uname -r) | grep  CONFIG_USB_ETH
 # CONFIG_USB_ETH is not set
 ```
 
-Also, the default settings are for the Fedora installation to want to start networking with DHCP.  If it is connected to your PC via USB, this isn't so convenient (unless you set up a network bridge to your existing DHCP provider, or set up dnsmasq locally, for instance).  So, instead, provide a static route in ```/tmp/root/``` :
+So, next stop :
+* http://dumb-looks-free.blogspot.sg/2014/05/beaglebone-black-bbb-cross-compile_28.html
+
+Even if ```g_ether.ko``` were available, we'd still need to do the bridging stuff that many posts focus on...
+
+Ah, BUT (having seen [configfs](https://wiki.tizen.org/wiki/USB/Linux_USB_Layers/Configfs_Composite_Gadget/General_configuration)) ::
+```
+[root@localhost network-scripts]# cat /boot/config-$(uname -r) | grep CONFIGFS_FS
+CONFIG_CONFIGFS_FS=y
+```
+So, perhaps there is a possibility of making this work!
+
+
+
+### Static IP over Ethernet
+
+The default NetworkManager settings are for the Fedora installation to want to start networking with DHCP.  If it is connected to your PC via USB, this isn't so convenient (unless you set up a network bridge to your existing DHCP provider, or set up dnsmasq locally, for instance).  So, instead, provide a static route in ```/tmp/root/``` :
 
 
 
