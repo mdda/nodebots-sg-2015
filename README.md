@@ -64,7 +64,9 @@ initramfs-4.0.4-301.fc22.armv7hl.img                     .vmlinuz-4.0.4-301.fc22
 [root@PC ~]# umount /tmp/root
 
 [root@PC ~]# PART=/dev/sdg3
-[root@PC ~]# mkdir /tmp/root; mount $PART /tmp/root; ls /tmp/root 
+[root@PC ~]# mkdir /tmp/root
+[root@PC ~]# mount $PART /tmp/root
+[root@PC ~]# ls /tmp/root 
 bin  boot  dev  etc  home  lib  lost+found  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
 ## This is the right answer...
 
@@ -86,13 +88,48 @@ bin  boot  dev  etc  home  lib  lost+found  media  mnt  opt  proc  root  run  sb
 But, if (like me), you're only connected by USB, you need to tell ```systemd``` not to wait for the screen prompts to be answered  (this is from the bottom of the Fedora instructions) :
 
 ```
-USER=myusername
+[root@PC ~]# USER=myusername
 rm -f /tmp/root/etc/systemd/system/graphical.target.wants/initial-setup-graphical.service
 rm -f /tmp/root/etc/systemd/system/multi-user.target.wants/initial-setup-text.service
 mkdir /tmp/root/root/.ssh/
 cat /home/$USER/.ssh/id_rsa.pub >> /tmp/root/root/.ssh/authorized_keys
 chmod -R u=rwX,o=,g= /tmp/root/root/.ssh/
+```
 
+During the first boot (coming soon) the system will launch the 'initial-setup' utility. For graphical images this will occur on the display, for minimal images this will occur on the serial console.  Failure to complete the initial-setup will prevent logging into the system.  
+
+To log in to the root account without completing the initial-setup you will need to minimally edit ```/etc/passwd``` file and remove the 'x' from the line beginning with 'root' (this will allow you to log into the root account without entering a password). 
+
+```
+[root@PC ~]# nano /tmp/root/etc/passwd
+```
+
+Also, the default settings are for the Fedora installation to want to start networking with DHCP.  If it is connected to your PC via USB, this isn't so convenient (unless you set up a network bridge to your existing DHCP provider, or set up dnsmasq locally, for instance).  So, instead, provide a static route in ```/tmp/root/``` :
+
+```
+cat << EOF
+TYPE=Ethernet
+BOOTPROTO=none
+IPADDR0=192.168.1.19
+PREFIX0=24
+GATEWAY0=192.168.1.1
+DNS1=192.168.1.1
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+NAME="Static .1.19"
+UUID=e4d2eac2-aec6-4725-afb4-c508d84344bf
+ONBOOT=yes
+IPV6_PEERDNS=yes
+IPV6_PEERROUTES=yes
+EOF > /tmp/root/etc/sysconfig/network-scripts/ifcfg-Static_.1.19
+```
+
+
+```
 umount /tmp/root
 ```
 
