@@ -4,28 +4,40 @@ var five = require("johnny-five");
 var keypress = require("keypress");
 keypress(process.stdin);
 
-var board = new five.Board();
+var mag=80;  // Can be up to 256 (very maximum...)
+function pwm_width(pos) {  // pos is a fraction position, 1 loops around to 0
+  console.log("pwm_width("+pos+")");
+  return (128 + Math.sin(2.0 * pos * 3.14159265) * mag / 2.0) | 0; // integer
+}
 
 //console.log(Math.sin(.123));
+//console.log(pwm_width(0));
+//console.log(pwm_width(.25));
+//return;
+
+var board = new five.Board();
 
 // The board's pins will not be accessible until
 // the board has reported that it is ready
 
 board.on("ready", function() {
   function motor_init(m) {
-    for(var i=0;i++;i<3) {
-      this.pinMode(m[i], five.Pin.PWM);
-      this.analogWrite(m[i], 0);
+    console.log("motor_init");
+    for(var i=0;i<3;i++) {
+      console.log("motor_init("+m[i]+")");
+      board.pinMode(m[i], five.Pin.PWM);
+      board.analogWrite(m[i], pwm_width(0));
     }
   }
-  function motor_stop(m) {
-    for(var i=0;i++;i<3) {
-      this.analogWrite(m[i], 0);
+  function motor_reset(m) {
+    for(var i=0;i<3;i++) {
+      board.analogWrite(m[i], pwm_width(0));
     }
   }
   function motor_pos(m, pos) {
-    for(var i=0;i++;i<3) {
-      this.analogWrite(m[i], pwm(pos + i/3));
+    for(var i=0;i<3;i++) {
+      console.log("motor_pos("+m[i]+", "+pos+")");
+      board.analogWrite(m[i], pwm_width(pos + i/3));
     }
   }
 
@@ -66,13 +78,9 @@ board.on("ready", function() {
       p -= v;
       motor_pos(motor, p);
     } else if (key.name === "space") {
-      console.log("Stopping");
-      motor_stop(motor);
+      console.log("Reset");
+      motor_reset(motor);
     }
   });
 });
 
-var mag=80;
-function pwm(pos) {
-  return int(128 + Math.sin(2.0 * pos * 3.14159265) * mag / 2.0);
-}
