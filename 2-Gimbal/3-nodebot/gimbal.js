@@ -51,7 +51,7 @@ board.on("ready", function() {
   var motor0 = [06,05,03];
     
   motor_init(motor1); // Appears to be the one on the -ve side of power in
-  motor_init(motor0); // Appears to be the one on the +ve side of power in
+  //motor_init(motor0); // Appears to be the one on the +ve side of power in
   var motor = motor1;
 
   var p=0, v=0.1;
