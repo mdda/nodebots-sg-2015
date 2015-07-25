@@ -22,3 +22,11 @@ npm install johnny-five
 node gimbal.js
 ```
 
+
+
+### PIN assignments for Gimbal
+
+* Blue LED : PIN 8
+
+* 
+
