@@ -10,33 +10,44 @@ var board = new five.Board();
 // the board has reported that it is ready
 
 board.on("ready", function() {
+  function motor_init(m) {
+    for(var i=0;i++;i<3) {
+      this.pinMode(m[i], five.Pin.PWM);
+      this.analogWrite(m[i], 0);
+    }
+  }
+  function motor_stop(m) {
+    for(var i=0;i++;i<3) {
+      this.analogWrite(m[i], 0);
+    }
+  }
+  function motor_pos(m, pos) {
+    for(var i=0;i++;i<3) {
+      this.analogWrite(m[i], pwm(pos + i/3));
+    }
+  }
+
   console.log("Ready!");
 
   var led = new five.Led(8);
-  //led.blink(100);
+  led.blink(100);
 
   console.log("Use Up and Down arrows for CW and CCW respectively. Space to stop.");
 
-/*
-// Hardware Abstraction for Motor connectors,
-// DO NOT CHANGE UNLES YOU KNOW WHAT YOU ARE DOING !!!
-#define PWM_A_MOTOR1 OCR2A
-#define PWM_B_MOTOR1 OCR1B
-#define PWM_C_MOTOR1 OCR1A
+  var motor1 = [11,10,09];    
+  var motor0 = [06,05,03];
+    
+  motor_init(motor1);
+  motor_init(motor0);
+  var motor = motor1;
 
-#define PWM_A_MOTOR0 OCR0A
-#define PWM_B_MOTOR0 OCR0B
-#define PWM_C_MOTOR0 OCR2B
-*/
-
-  var servo = new five.Servo.Continuous(10).stop();
-
+  var p=0;
+  
   process.stdin.resume();
   process.stdin.setEncoding("utf8");
   process.stdin.setRawMode(true);
 
   process.stdin.on("keypress", function(ch, key) {
-
     if (!key) {
       return;
     }
@@ -46,13 +57,20 @@ board.on("ready", function() {
       process.exit();
     } else if (key.name === "up") {
       console.log("CW");
-      servo.cw();
+      p += 0.01;
+      motor_pos(motor, p);
     } else if (key.name === "down") {
       console.log("CCW");
-      servo.ccw();
+      p -= 0.01;
+      motor_pos(motor, p);
     } else if (key.name === "space") {
       console.log("Stopping");
-      servo.stop();
+      motor_stop(motor);
     }
   });
 });
+
+var mag=80;
+function pwm(pos) {
+  return int(128 + sin(2.0 * pos * 3.14159265) * mag / 2.0);
+}
