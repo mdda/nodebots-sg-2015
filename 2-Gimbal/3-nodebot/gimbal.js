@@ -6,7 +6,7 @@ keypress(process.stdin);
 
 var mag=80;  // Can be up to 256 (very maximum...)
 function pwm_width(pos) {  // pos is a fraction position, 1 loops around to 0
-  console.log("pwm_width("+pos+")");
+  //console.log("pwm_width("+pos+")");
   return (128 + Math.sin(2.0 * pos * 3.14159265) * mag / 2.0) | 0; // integer
 }
 
@@ -22,9 +22,8 @@ var board = new five.Board();
 
 board.on("ready", function() {
   function motor_init(m) {
-    console.log("motor_init");
     for(var i=0;i<3;i++) {
-      console.log("motor_init("+m[i]+")");
+      //console.log("motor_init("+m[i]+")");
       board.pinMode(m[i], five.Pin.PWM);
       board.analogWrite(m[i], pwm_width(0));
     }
@@ -36,7 +35,7 @@ board.on("ready", function() {
   }
   function motor_pos(m, pos) {
     for(var i=0;i<3;i++) {
-      console.log("motor_pos("+m[i]+", "+pos+")");
+      //console.log("motor_pos("+m[i]+", "+pos+")");
       board.analogWrite(m[i], pwm_width(pos + i/3));
     }
   }
@@ -51,8 +50,8 @@ board.on("ready", function() {
   var motor1 = [11,10,09];    
   var motor0 = [06,05,03];
     
-  motor_init(motor1);
-  motor_init(motor0);
+  motor_init(motor1); // Appears to be the one on the -ve side of power in
+  motor_init(motor0); // Appears to be the one on the +ve side of power in
   var motor = motor1;
 
   var p=0, v=0.1;
