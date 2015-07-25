@@ -2,6 +2,18 @@
 
 http://inotool.org/
 
+### Determine port used for USB serial
+
+```
+tail -f /var/log/messages
+# ...
+# Jul 25 12:32:58 changi kernel: usb 1-5: FTDI USB Serial Device converter now attached to ttyUSB0
+# ...
+```
+
+This indicates that the correct interface setting is ```/dev/ttyUSB0```
+
+
 ### Determine board type for Gimbal
 
 According to Martinez 50mm v3.0 manual, the gimbal board is a :
@@ -11,13 +23,19 @@ According to Martinez 50mm v3.0 manual, the gimbal board is a :
 ino list-models
 ```
 
-implies that the correct model setting is ``-m pro5v328``
+implies that the correct model setting is ```pro5v328```
 
+### Create ```ino.ini```
+
+Contents of ``ino.ini``` (to be put in each project being built) :
+```
+board-model = pro5v328
+serial-port = /dev/ttyACM1
+```
 
 ### Initialise a Blink project
 
 Following the notes in http://inotool.org/quickstart :
-
 ```
 mkdir 0-blink
 cd beep
