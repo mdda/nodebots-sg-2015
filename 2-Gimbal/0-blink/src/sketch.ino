@@ -1,5 +1,7 @@
 
-#define LED_PIN 13
+// #define LED_PIN 13
+// See LEDPIN_PINMODE in BruGi definitions.h
+#define LED_PIN 8
 
 void setup()
 {
