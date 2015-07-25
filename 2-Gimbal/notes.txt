@@ -30,7 +30,7 @@ implies that the correct model setting is ```pro5v328```
 Contents of ``ino.ini``` (to be put in each project being built) :
 ```
 board-model = pro5v328
-serial-port = /dev/ttyACM1
+serial-port = /dev/ttyUSB0
 ```
 
 ### Initialise a Blink project
@@ -42,11 +42,21 @@ cd beep
 ino init -t blink
 ```
 
-Build it :
+Build it:
 ```
 ino build
 ```
 
 All the assets / intermediate files appear in ```.build/uno/```
+
+
+Upload it:
+```
+ino upload
+```
+
+... And no flashing light ...
+
+But, the gimbal does go limp, which suggests something is happening!
 
 
