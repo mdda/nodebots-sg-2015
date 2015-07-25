@@ -6,6 +6,8 @@ keypress(process.stdin);
 
 var board = new five.Board();
 
+//console.log(Math.sin(.123));
+
 // The board's pins will not be accessible until
 // the board has reported that it is ready
 
@@ -41,7 +43,7 @@ board.on("ready", function() {
   motor_init(motor0);
   var motor = motor1;
 
-  var p=0;
+  var p=0, v=0.1;
   
   process.stdin.resume();
   process.stdin.setEncoding("utf8");
@@ -56,12 +58,12 @@ board.on("ready", function() {
       console.log("Quitting");
       process.exit();
     } else if (key.name === "up") {
-      console.log("CW");
-      p += 0.01;
+      console.log("CW  "+p);
+      p += v;
       motor_pos(motor, p);
     } else if (key.name === "down") {
-      console.log("CCW");
-      p -= 0.01;
+      console.log("CCW "+p);
+      p -= v;
       motor_pos(motor, p);
     } else if (key.name === "space") {
       console.log("Stopping");
@@ -72,5 +74,5 @@ board.on("ready", function() {
 
 var mag=80;
 function pwm(pos) {
-  return int(128 + sin(2.0 * pos * 3.14159265) * mag / 2.0);
+  return int(128 + Math.sin(2.0 * pos * 3.14159265) * mag / 2.0);
 }
