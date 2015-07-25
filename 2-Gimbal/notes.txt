@@ -38,8 +38,9 @@ serial-port = /dev/ttyUSB0
 Following the notes in http://inotool.org/quickstart :
 ```
 mkdir 0-blink
-cd beep
-ino init -t blink
+cd 0-blink
+# here, 'blink' is a template (default is <BLANK>, which is very basic)
+ino init -t blink  
 ```
 
 Build it:
