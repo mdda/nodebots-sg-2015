@@ -1,1 +1,34 @@
 ## Fedora :: ino
+
+http://inotool.org/
+
+### Determine board type for Gimbal
+
+According to Martinez 50mm v3.0 manual, the gimbal board is a :
+* Arduino Pro or Pro Mini (5V, 16MHz) w/ ATMega328
+
+```
+ino list-models
+```
+
+implies that the correct model setting is ``-m pro5v328``
+
+
+### Initialise a Blink project
+
+Following the notes in http://inotool.org/quickstart :
+
+```
+mkdir 0-blink
+cd beep
+ino init -t blink
+```
+
+Build it :
+```
+ino build
+```
+
+All the assets / intermediate files appear in ```.build/uno/```
+
+
