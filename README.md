@@ -25,7 +25,10 @@ One eye-catching thing is that the entire assembly (two brushless motors,
 gimbal controller board, 3-axis sensor, CNCed aluminium hardware and
 on-board USB/serial interface) currently costs :
 
-*  [less than $60 from AliExpress](http://www.aliexpress.com/item/2-axis-BGC-Brushless-Camera-Gimbal-GoPro3-Controller-PTZ-aluminum-Full-set-of-parts/1585412479.html)
+* [less than $60 from AliExpress (original source)](http://www.aliexpress.com/item/2-axis-BGC-Brushless-Camera-Gimbal-GoPro3-Controller-PTZ-aluminum-Full-set-of-parts/1585412479.html)
+* Just : [controller board](http://www.aliexpress.com/item/2-Axis-Brushless-Gimbal-Controller-board-containing-IMU-can-use-Germany-Russia-Russian-firmware-BGC/1913360790.html)
+* Just : [Brushless motors](http://www.aliexpress.com/item/Brushless-Gimbal-Motor-2208-KV80-for-Gopro-3-Brushless-Camera-Mount-Gimbal/2024123654.html)
+* Just :[Gimbal hardware](http://www.aliexpress.com/item/160g-RTF-DJI-Phantom-Gopro-2-3-CNC-Brushless-Camera-Gimbal-not-including-motors-1-brushless/32383003272.html)
 
 However, since the quadcopter in question has self-disassembled : It
 was time to experiment with the gimbal board as (potentially) 
@@ -49,3 +52,7 @@ Key features of the write-up:
 
 If anyone needs help enhancing the code (which I'll continue to add to), please let me know.
 
+Also, I'm pretty sure that any gimbal board that you can get source code for 
+(i.e. don't buy a board unless source is available) would be NodeBot-able 
+and therefore a neat, integrated platform of all sorts of projects (and, I guess,
+camera stabilisation, if you need that motivation too).
