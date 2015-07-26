@@ -69,11 +69,11 @@ board.on("ready", function() {
       console.log("Quitting");
       process.exit();
     } else if (key.name === "up") {
-      console.log("CW  "+p);
+      console.log("CW  "+p.toFixed(3));
       p += v;
       motor_pos(motor, p);
     } else if (key.name === "down") {
-      console.log("CCW "+p);
+      console.log("CCW "+p.toFixed(3));
       p -= v;
       motor_pos(motor, p);
     } else if (key.name === "space") {
