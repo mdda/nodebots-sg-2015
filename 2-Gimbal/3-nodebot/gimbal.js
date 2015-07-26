@@ -4,16 +4,23 @@ var five = require("johnny-five");
 var keypress = require("keypress");
 keypress(process.stdin);
 
-var mag=80;  // Can be up to 256 (very maximum...)
+var mag=160;  // Can be up to 256 (very maximum...)
 function pwm_width(pos) {  // pos is a fraction position, 1 loops around to 0
   //console.log("pwm_width("+pos+")");
   return (128 + Math.sin(2.0 * pos * 3.14159265) * mag / 2.0) | 0; // integer
 }
 
-//console.log(Math.sin(.123));
-//console.log(pwm_width(0));
-//console.log(pwm_width(.25));
-//return;
+if(false) {
+  for(var pos=0;pos<2.0;pos+=0.02) {
+    console.log(pos.toFixed(2) +" : "+ 
+       pwm_width(pos).toFixed(0) +" "+ 
+       pwm_width(pos+1/3).toFixed(0) +" "+ 
+       pwm_width(pos+2/3).toFixed(0));
+  }
+  //console.log(Math.sin(.123));
+  //console.log(pwm_width(0));
+  return;
+}
 
 var board = new five.Board();
 
@@ -25,11 +32,11 @@ board.on("ready", function() {
     for(var i=0;i<3;i++) {
       //console.log("motor_init("+m[i]+")");
       board.pinMode(m[i], five.Pin.PWM);
-      board.analogWrite(m[i], pwm_width(0));
     }
   }
   function motor_reset(m) {
     for(var i=0;i<3;i++) {
+      // Since these are all at the same PWM, there is no net current in the windings...
       board.analogWrite(m[i], pwm_width(0));
     }
   }
@@ -53,8 +60,10 @@ board.on("ready", function() {
   motor_init(motor1); // Appears to be the one on the -ve side of power in
   //motor_init(motor0); // Appears to be the one on the +ve side of power in
   var motor = motor1;
+  motor_reset(motor);
 
-  var p=0, v=0.1;
+  var p=0.00, v=0.03333333333333333333;
+  //motor_pos(motor, p);
   
   process.stdin.resume();
   process.stdin.setEncoding("utf8");
@@ -69,12 +78,12 @@ board.on("ready", function() {
       console.log("Quitting");
       process.exit();
     } else if (key.name === "up") {
-      console.log("CW  "+p.toFixed(3));
       p += v;
+      console.log("CW  "+p.toFixed(3));
       motor_pos(motor, p);
     } else if (key.name === "down") {
-      console.log("CCW "+p.toFixed(3));
       p -= v;
+      console.log("CCW "+p.toFixed(3));
       motor_pos(motor, p);
     } else if (key.name === "space") {
       console.log("Reset");
