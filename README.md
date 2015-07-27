@@ -21,21 +21,24 @@ was game-over for the BeagleBoneBlack (for now).
 The gimbal is a very attractive (to roboticists) piece of hardware that 
 was originally designed to stabilised a camera mounted beneath a quadcopter.
 
-One eye-catching thing is that the entire assembly (two brushless motors,
-gimbal controller board, 3-axis sensor, CNCed aluminium hardware and
-on-board USB/serial interface) currently costs :
-
-* [less than $60 from AliExpress (original source)](http://www.aliexpress.com/item/2-axis-BGC-Brushless-Camera-Gimbal-GoPro3-Controller-PTZ-aluminum-Full-set-of-parts/1585412479.html)
-* Same : [controller board](http://www.aliexpress.com/item/2-Axis-Brushless-Gimbal-Controller-board-containing-IMU-can-use-Germany-Russia-Russian-firmware-BGC/1913360790.html)
-* Same : [Brushless motors](http://www.aliexpress.com/item/Brushless-Gimbal-Motor-2208-KV80-for-Gopro-3-Brushless-Camera-Mount-Gimbal/2024123654.html)
-* Same : [Gimbal hardware](http://www.aliexpress.com/item/160g-RTF-DJI-Phantom-Gopro-2-3-CNC-Brushless-Camera-Gimbal-not-including-motors-1-brushless/32383003272.html)
-
-* Very similar [setup for ~$47](http://www.aliexpress.com/item/2-Axis-DIY-CNC-Metal-Camera-Brushless-Gimbal-Mount-for-DJI-Phantom-1-2-Walkera-X350/32266077761.html)
-* Very similar [setup for ~$45](http://www.aliexpress.com/item/2208-Shaft-Gimbal-Brushless-Motor-80KV-3-12-MOS-Brushless-Gimbal-Controller-Driver-Shock-absorbing-CNC/32259711679.html)
-
 However, since the quadcopter in question has self-disassembled : It
 was time to experiment with the gimbal board as (potentially) 
 an Arduino compatible-host for for Johnny-Five nodebot control.
+
+One eye-catching thing is that the entire assembly (two brushless motors,
+gimbal controller board, 3-axis sensor, CNCed aluminium hardware and
+on-board USB/serial interface) was pretty cheap - here's what I found online 
+(though I bought the unit around a year ago) :
+
+* [less than $60 from AliExpress (original source)](http://www.aliexpress.com/item/2-axis-BGC-Brushless-Camera-Gimbal-GoPro3-Controller-PTZ-aluminum-Full-set-of-parts/1585412479.html)
+* Or very similar setups :
+  * [for ~$47](http://www.aliexpress.com/item/2-Axis-DIY-CNC-Metal-Camera-Brushless-Gimbal-Mount-for-DJI-Phantom-1-2-Walkera-X350/32266077761.html)
+  * [for ~$45](http://www.aliexpress.com/item/2208-Shaft-Gimbal-Brushless-Motor-80KV-3-12-MOS-Brushless-Gimbal-Controller-Driver-Shock-absorbing-CNC/32259711679.html)
+
+* And the individual components:
+  * [Controller board](http://www.aliexpress.com/item/2-Axis-Brushless-Gimbal-Controller-board-containing-IMU-can-use-Germany-Russia-Russian-firmware-BGC/1913360790.html)
+  * [High torque brushless motors](http://www.aliexpress.com/item/Brushless-Gimbal-Motor-2208-KV80-for-Gopro-3-Brushless-Camera-Mount-Gimbal/2024123654.html)
+  * [Gimbal hardware](http://www.aliexpress.com/item/160g-RTF-DJI-Phantom-Gopro-2-3-CNC-Brushless-Camera-Gimbal-not-including-motors-1-brushless/32383003272.html)
 
 Fortunately, it became apparent from its documentation and source code 
 that the 'Martinez-compatible' Gimbal board is equivalent to an Arduino MegaPro, 
