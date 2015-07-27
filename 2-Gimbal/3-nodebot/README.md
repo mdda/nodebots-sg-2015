@@ -64,3 +64,10 @@ Therefore :
 * PWM pins for 1 motor : [A,B,C]=[11, 10, 9]
 * PWM pins for 0 motor : [A,B,C]=[ 6,  5, 3]
 
+### Next 
+
+* Determine how to set FastPWM Mode (since the Firmata seems to make the frequency 
+  audible) - see [this helpful article](https://www.arduino.cc/en/Tutorial/SecretsOfArduinoPWM),
+  and notes about how to [add this to the Firmata setup()](http://forum.arduino.cc/index.php?topic=40307.0)
+
+* Investigate reading from the 3-axis sensor (via I2C)

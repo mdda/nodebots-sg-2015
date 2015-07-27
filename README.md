@@ -30,7 +30,7 @@ gimbal controller board, 3-axis sensor, CNCed aluminium hardware and
 on-board USB/serial interface) was pretty cheap - here's what I found online 
 (though I bought the unit around a year ago) :
 
-* [less than $60 from AliExpress (original source)](http://www.aliexpress.com/item/2-axis-BGC-Brushless-Camera-Gimbal-GoPro3-Controller-PTZ-aluminum-Full-set-of-parts/1585412479.html)
+* [less than **$60** from AliExpress (original source)](http://www.aliexpress.com/item/2-axis-BGC-Brushless-Camera-Gimbal-GoPro3-Controller-PTZ-aluminum-Full-set-of-parts/1585412479.html)
 * Or very similar setups :
   * [for ~$47](http://www.aliexpress.com/item/2-Axis-DIY-CNC-Metal-Camera-Brushless-Gimbal-Mount-for-DJI-Phantom-1-2-Walkera-X350/32266077761.html)
   * [for ~$45](http://www.aliexpress.com/item/2208-Shaft-Gimbal-Brushless-Motor-80KV-3-12-MOS-Brushless-Gimbal-Controller-Driver-Shock-absorbing-CNC/32259711679.html)
