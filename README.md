@@ -37,8 +37,11 @@ on-board USB/serial interface) was pretty cheap - here's what I found online
 
 * And the individual components:
   * [Controller board](http://www.aliexpress.com/item/2-Axis-Brushless-Gimbal-Controller-board-containing-IMU-can-use-Germany-Russia-Russian-firmware-BGC/1913360790.html)
-  * [High torque brushless motors](http://www.aliexpress.com/item/Brushless-Gimbal-Motor-2208-KV80-for-Gopro-3-Brushless-Camera-Mount-Gimbal/2024123654.html)
   * [Gimbal hardware](http://www.aliexpress.com/item/160g-RTF-DJI-Phantom-Gopro-2-3-CNC-Brushless-Camera-Gimbal-not-including-motors-1-brushless/32383003272.html)
+  * [High torque brushless motors](http://www.aliexpress.com/item/Brushless-Gimbal-Motor-2208-KV80-for-Gopro-3-Brushless-Camera-Mount-Gimbal/2024123654.html) - NB: These are 
+    different from regular brushless motors (that you would use to spin the propellers, for instance) because these are wound with very thin wire 
+    (and 70T refers to 70 turns of wire, for instance).  This means that the motors draw less current, which is better for being under constant power (heat-wise, at minimum).  So,
+    you need to specify 'gimbal' in any search for brushless motors to ensure that you get the right kind of specifications.
 
 Fortunately, it became apparent from its documentation and source code 
 that the 'Martinez-compatible' Gimbal board is equivalent to an Arduino MegaPro, 
