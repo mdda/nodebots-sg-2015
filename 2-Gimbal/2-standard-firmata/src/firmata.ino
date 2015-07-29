@@ -25,8 +25,7 @@
 
 #include <Servo.h>
 #include <Wire.h>
-// #include <Firmata.h>  // mdda
-#include "Firmata.h"
+#include <Firmata.h>
 
 #define I2C_WRITE                   B00000000
 #define I2C_READ                    B00001000
@@ -663,6 +662,24 @@ void systemResetCallback()
     outputPort(i, readPort(i, portConfigInputs[i]), true);
   }
   */
+  
+  /* mdda added : Set system for FastPWM    { */
+  /* This is from definitions.h and BLcontroller.h of BruGi firmware */
+
+  #define PWM_32KHZ_PHASE
+  #define CC_FACTOR 32
+
+  #ifdef PWM_32KHZ_PHASE
+    TCCR0A = _BV(COM0A1) | _BV(COM0B1) | _BV(WGM00); 
+    TCCR0B = _BV(CS00);
+    TCCR1A = _BV(COM1A1) | _BV(COM1B1) | _BV(WGM10);
+    TCCR1B = _BV(CS10);
+    TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM20);
+    TCCR2B = _BV(CS20);
+  #endif
+
+  /* mdda added : Set system for FastPWM    } */
+  
   isResetting = false;
 }
 
