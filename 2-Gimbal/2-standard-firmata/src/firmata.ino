@@ -665,11 +665,14 @@ void systemResetCallback()
   
   /* mdda added : Set system for FastPWM    { */
   /* This is from definitions.h and BLcontroller.h of BruGi firmware */
-
+  
+  // 32Khz actually generates 31.388Kz on my scope
+  // If the following line is commented out, the PWM signals will run at 490Hz 
+  // (which is an audible whine)
   #define PWM_32KHZ_PHASE
-  #define CC_FACTOR 32
 
   #ifdef PWM_32KHZ_PHASE
+    #define CC_FACTOR 32
     TCCR0A = _BV(COM0A1) | _BV(COM0B1) | _BV(WGM00); 
     TCCR0B = _BV(CS00);
     TCCR1A = _BV(COM1A1) | _BV(COM1B1) | _BV(WGM10);

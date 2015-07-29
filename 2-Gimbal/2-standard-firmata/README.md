@@ -13,6 +13,14 @@ git clone https://github.com/firmata/arduino.git
 popd
 ```
 
+When compiling, this produces the following warning, which appears to be harmless :
+```
+.build/pro5v328/Makefile:229: warning: 
+   overriding recipe for target '.build/pro5v328/arduino/libarduino.a'
+.build/pro5v328/Makefile:92: warning: 
+   ignoring old recipe for target '.build/pro5v328/arduino/libarduino.a'
+```
+
 ### StandardFirmata.ino Tweaks
 
 * FastPWM initialisation has been added to ```setup()```
