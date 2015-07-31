@@ -61,7 +61,32 @@ board.on("ready", function() {
   //motor_init(motor0); // Appears to be the one on the +ve side of power in
   var motor = motor1;
   motor_reset(motor);
+  
+  /* Now try to find I2C device : MPU6050 */
+  var accelerometer = new five.Accelerometer({
+    controller: "MPU6050"
+  });
 
+  accelerometer.on("xchange", function() {
+    console.log("accelerometer");
+    console.log("  x            : ", this.x);
+    console.log("  y            : ", this.y);
+    console.log("  z            : ", this.z);
+    console.log("  pitch        : ", this.pitch);
+    console.log("  roll         : ", this.roll);
+    console.log("  acceleration : ", this.acceleration);
+    console.log("  inclination  : ", this.inclination);
+    console.log("  orientation  : ", this.orientation);
+    console.log("--------------------------------------");
+  });  
+  accelerometer.on("change", function() {
+    console.log("acc:"+
+      " xyz:"+p2dp(this.x, this.y, this.z)+
+      " pra:"+p2dp(this.pitch, this.roll, this.acceleration)+
+      " io :"+p2dp(this.inclination, this.orientation, 0)
+    );
+  });  
+  
   var p=0.00, v=0.03333333333333333333;
   //motor_pos(motor, p);
   
@@ -92,3 +117,7 @@ board.on("ready", function() {
   });
 });
 
+
+function p2dp(x,y,z) {
+  return "(" + x.toFixed(2) +","+ y.toFixed(2) +","+ z.toFixed(2) +")";
+}
