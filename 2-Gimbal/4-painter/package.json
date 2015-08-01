@@ -1,0 +1,17 @@
+{
+  "name": "martinez-painter",
+  "main": "gimbal.js",
+  "version": "0.0.1",
+  "dependencies": {
+    "johnny-five": "*",
+    "keypress": "*"
+  },
+  "devDependencies": {
+  },
+  "//": {
+  },
+  "engines": {
+    "node": "0.10.30",
+    "npm": "1.4.x"
+  }
+}
