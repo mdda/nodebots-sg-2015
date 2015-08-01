@@ -58,16 +58,19 @@ board.on("ready", function() {
   var motor0 = [06,05,03];
     
   motor_init(motor1); // Appears to be the one on the -ve side of power in
-  //motor_init(motor0); // Appears to be the one on the +ve side of power in
-  var motor = motor1;
-  motor_reset(motor);
+  motor_init(motor0); // Appears to be the one on the +ve side of power in
+  
+  var motorx = motor1;
+  var motory = motor0;
+  motor_reset(motorx);
+  motor_reset(motory);
   
   /* Now try to find I2C device : MPU6050 */
   var accelerometer = new five.Accelerometer({
     controller: "MPU6050"
   });
 
-  accelerometer.on("xchange", function() {
+  accelerometer.on("change-long", function() { // -long
     console.log("accelerometer");
     console.log("  x            : ", this.x);
     console.log("  y            : ", this.y);
@@ -79,16 +82,17 @@ board.on("ready", function() {
     console.log("  orientation  : ", this.orientation);
     console.log("--------------------------------------");
   });  
-  accelerometer.on("change", function() {
-    console.log("acc:"+
-      " xyz:"+p2dp(this.x, this.y, this.z)+
-      " pra:"+p2dp(this.pitch, this.roll, this.acceleration)+
-      " io :"+p2dp(this.inclination, this.orientation, 0)
+  accelerometer.on("change-line", function() { // -line
+    console.log("acc:"
+      +" xyz:"+p2dp(this.x*20+50, this.y*20+50, this.z*20+50)
+      +" pra:"+p2dp(this.pitch*0.4+50, this.roll*0.4+50, this.inclination*0.2+50)
+      +" io :"+p2dp((this.acceleration-1)*20+50, this.orientation*10+50, 0)
     );
   });  
   
-  var p=0.00, v=0.03333333333333333333;
-  //motor_pos(motor, p);
+  var x=0.00, y=0.0, v=0.03333333333333333333;
+  motor_pos(motorx, x);
+  motor_pos(motory, y);
   
   process.stdin.resume();
   process.stdin.setEncoding("utf8");
@@ -103,17 +107,23 @@ board.on("ready", function() {
       console.log("Quitting");
       process.exit();
     } else if (key.name === "up") {
-      p += v;
-      console.log("CW  "+p.toFixed(3));
-      motor_pos(motor, p);
+      y += v;
+      motor_pos(motory, y);
     } else if (key.name === "down") {
-      p -= v;
-      console.log("CCW "+p.toFixed(3));
-      motor_pos(motor, p);
+      y -= v;
+      motor_pos(motory, y);
+    } else if (key.name === "left") {
+      x += v;
+      motor_pos(motorx, x);
+    } else if (key.name === "right") {
+      x -= v;
+      motor_pos(motorx, x);
     } else if (key.name === "space") {
       console.log("Reset");
-      motor_reset(motor);
+      motor_reset(motorx);
+      motor_reset(motory);
     }
+    console.log("(x,y)=("+x.toFixed(2)+","+y.toFixed(2)+")");
   });
 });
 
