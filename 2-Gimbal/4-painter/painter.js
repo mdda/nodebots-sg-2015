@@ -5,17 +5,13 @@ var five = require("johnny-five");
 var keypress = require("keypress");
 keypress(process.stdin);
 
-// Documentation : https://github.com/wearefractal/camera
-//var camera = require("camera");
-//var webcam = camera.createStream(webcam_device_index);
-
 var cv = require('opencv');
 var webcam = new cv.VideoCapture(webcam_device_index);
 var viewer = new cv.NamedWindow('Video', 0);
 
 var t0=new Date(), t1=t0;
 
-setInterval(function() {
+function get_frame() {
   webcam.read(function(err, im) {
     if (err) throw err;
     
@@ -26,11 +22,18 @@ setInterval(function() {
     if (im.size()[0] > 0 && im.size()[1] > 0) {
       viewer.show(im);
     }
-    viewer.blockingWaitKey(0, 50);
+    //viewer.blockingWaitKey(0, 0);
+    //viewer.blockingWaitKey(-1);
   });
-}, 2);
+}
+//setInterval(function() {
+//}, 10);
 
 /*
+// Documentation : https://github.com/wearefractal/camera
+//var camera = require("camera");
+//var webcam = camera.createStream(webcam_device_index);
+
 webcam.read(function(err, img) {
   if(err) {
     console.log("Error reading webcam!");
@@ -44,7 +47,7 @@ webcam.read(function(err, img) {
 //webcam.snapshot(function(buffer_png) {
 //  console.log("Have taken a snapshot!");
 //});
-return;
+//return;
 
 var board = new five.Board();
 board.on("ready", function() {
@@ -68,7 +71,8 @@ board.on("ready", function() {
       board.analogWrite(m[i], p);
     }
   }
-
+  get_frame();
+  
   console.log("Ready!");
 
   var led = new five.Led(8);
@@ -121,6 +125,7 @@ board.on("ready", function() {
       motor_reset(motory);
     }
     console.log("(x,y)=("+pp(x,4,2)+","+pp(y,4,2)+")");
+    get_frame();
   });
 });
 
