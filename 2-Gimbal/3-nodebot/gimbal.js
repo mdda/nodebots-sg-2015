@@ -10,6 +10,20 @@ function pwm_width(pos) {  // pos is a fraction position, 1 loops around to 0
   return (128 + Math.sin(2.0 * pos * 3.14159265) * pwm_mag / 2.0) | 0; // integer
 }
 
+function pp(v,width,dp) {
+  var s="          "+v.toFixed(dp);
+  return s.substr(s.length-width);
+}
+function pp62(v) {
+  return pp(v,6,2);
+}
+
+if(false) {
+  console.log(pp(5.7234234,6,2));
+  console.log(pp(5.7234234,6,2));
+  return;
+}
+
 if(false) {
   for(var pos=0;pos<2.0;pos+=0.02) {
     console.log(pos.toFixed(2) +" : "+ 
@@ -44,7 +58,7 @@ board.on("ready", function() {
     var p;
     for(var i=0;i<3;i++) {
       p = pwm_width(pos + i/3);
-      console.log("motor_pos("+m[i]+", "+(p).toFixed(0)+")");
+      console.log("motor_pos("+pp(m[i],2,0)+", "+pp62(pos+i/3)+" -> "+pp(p,3,0)+")");
       board.analogWrite(m[i], p);
     }
   }
@@ -125,11 +139,11 @@ board.on("ready", function() {
       motor_reset(motorx);
       motor_reset(motory);
     }
-    console.log("(x,y)=("+x.toFixed(2)+","+y.toFixed(2)+")");
+    console.log("(x,y)=("+pp(x,4,2)+","+pp(y,4,2)+")");
   });
 });
 
 
 function p2dp(x,y,z) {
-  return "(" + x.toFixed(2) +","+ y.toFixed(2) +","+ z.toFixed(2) +")";
+  return "(" + pp(x,4,2) +","+ pp(y,4,2) +","+ pp(y,4,2) +")";
 }
