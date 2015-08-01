@@ -3,5 +3,8 @@
 **/.build
 **/node_modules
 
-2-Gimbal/2-standard-firmata/arduino-firmata-downloaded
-2-Gimbal/2-standard-firmata/lib
+2-Gimbal/1-gimbal-original-brugi/GUI/
+
+2-Gimbal/2-standard-firmata/arduino-firmata-downloaded/
+2-Gimbal/2-standard-firmata/lib/
+
