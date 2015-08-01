@@ -1,59 +1,7 @@
-var webcam_device_index = 1; // X where /dev/videoX is the webcam device
-
 var five = require("johnny-five");
 
 var keypress = require("keypress");
 keypress(process.stdin);
-
-var cv = require('opencv');
-var webcam = new cv.VideoCapture(webcam_device_index);
-var viewer = new cv.NamedWindow('Video', 0);
-
-var t0=new Date(), t1=t0;
-
-function get_frame() {
-  webcam.read(function(err, im) {
-    if (err) throw err;
-    
-    t2=new Date();
-    console.log(im.size(), (t2 - t1));
-    t1=t2;
-    
-    if (im.size()[0] > 0 && im.size()[1] > 0) {
-      viewer.show(im);
-      console.log("Image displayed");
-    }
-    else {
-      console.log("No Image returned");
-    }
-    viewer.blockingWaitKey(1);
-    //viewer.blockingWaitKey(-1);
-  });
-}
-
-setInterval(function() {
-  get_frame();
-}, 500);
-
-/*
-// Documentation : https://github.com/wearefractal/camera
-//var camera = require("camera");
-//var webcam = camera.createStream(webcam_device_index);
-
-webcam.read(function(err, img) {
-  if(err) {
-    console.log("Error reading webcam!");
-    return;
-  }
-  console.log("Have taken a snapshot!");
-  //img.toBuffer();
-});
-*/
-
-//webcam.snapshot(function(buffer_png) {
-//  console.log("Have taken a snapshot!");
-//});
-//return;
 
 var board = new five.Board();
 board.on("ready", function() {
@@ -77,7 +25,6 @@ board.on("ready", function() {
       board.analogWrite(m[i], p);
     }
   }
-  get_frame();
   
   console.log("Ready!");
 
@@ -131,7 +78,6 @@ board.on("ready", function() {
       motor_reset(motory);
     }
     console.log("(x,y)=("+pp(x,4,2)+","+pp(y,4,2)+")");
-    //get_frame();
   });
 });
 
