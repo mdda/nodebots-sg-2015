@@ -1,5 +1,4 @@
-
-
+## Gimbal Control using Node
 
 // https://github.com/rwaldron/johnny-five
 // https://github.com/rwaldron/johnny-five/wiki/Board

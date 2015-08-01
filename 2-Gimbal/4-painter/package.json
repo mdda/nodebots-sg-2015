@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "dependencies": {
     "johnny-five": "*",
-    "keypress": "*"
+    "keypress": "*",
+    "camera": "*"
   },
   "devDependencies": {
   },
