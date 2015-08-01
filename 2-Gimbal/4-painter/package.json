@@ -5,7 +5,7 @@
   "dependencies": {
     "johnny-five": "*",
     "keypress": "*",
-    "camera": "*"
+    "opencv": "*"
   },
   "devDependencies": {
   },
