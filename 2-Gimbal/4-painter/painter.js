@@ -26,7 +26,7 @@ function get_frame() {
     else {
       console.log("No Image returned");
     }
-    viewer.blockingWaitKey(0, 1);
+    viewer.blockingWaitKey(1);
     //viewer.blockingWaitKey(-1);
   });
 }
@@ -131,7 +131,7 @@ board.on("ready", function() {
       motor_reset(motory);
     }
     console.log("(x,y)=("+pp(x,4,2)+","+pp(y,4,2)+")");
-    get_frame();
+    //get_frame();
   });
 });
 
