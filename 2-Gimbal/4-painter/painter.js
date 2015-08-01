@@ -21,13 +21,19 @@ function get_frame() {
     
     if (im.size()[0] > 0 && im.size()[1] > 0) {
       viewer.show(im);
+      console.log("Image displayed");
     }
-    //viewer.blockingWaitKey(0, 0);
+    else {
+      console.log("No Image returned");
+    }
+    viewer.blockingWaitKey(0, 1);
     //viewer.blockingWaitKey(-1);
   });
 }
-//setInterval(function() {
-//}, 10);
+
+setInterval(function() {
+  get_frame();
+}, 500);
 
 /*
 // Documentation : https://github.com/wearefractal/camera
