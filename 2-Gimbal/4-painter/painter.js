@@ -1,5 +1,11 @@
 var five = require("johnny-five");
 
+var nanomsg = require("nanomsg");
+var sub = nanomsg.socket('sub');
+
+var addr = 'tcp://127.0.0.1:7789';
+sub.connect(addr);
+
 var keypress = require("keypress");
 keypress(process.stdin);
 
@@ -31,7 +37,7 @@ board.on("ready", function() {
   var led = new five.Led(8);
   led.blink(100);
 
-  console.log("Use Up and Down arrows for CW and CCW respectively. Space to stop.");
+  console.log("Use Up/Down/Left/Right arrows to control gimbal directly. Space to stop.");
 
   var motor1 = [11,10,09];    
   var motor0 = [06,05,03];
@@ -44,7 +50,7 @@ board.on("ready", function() {
   motor_reset(motorx);
   motor_reset(motory);
   
-  var x=0.00, y=0.0, v=0.025;
+  var x=0.0, y=0.0, v=0.025;
   motor_pos(motorx, x);
   motor_pos(motory, y);
   
@@ -79,6 +85,20 @@ board.on("ready", function() {
     }
     console.log("(x,y)=("+pp(x,4,2)+","+pp(y,4,2)+")");
   });
+
+  sub.on('data', function (buf) {
+    var json=JSON.parse(buf);
+    console.log("Executing :", json);
+    var a=json.a || '';
+    if(a=='to') {
+      x=json.xy[0]; y=json.xy[1];
+      motor_pos(motorx, x);
+      motor_pos(motory, y);
+      console.log("Moved to  :", x, y );
+    }
+    
+  });
+  
 });
 
 

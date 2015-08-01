@@ -4,6 +4,12 @@ var cv = require('opencv');
 var webcam = new cv.VideoCapture(webcam_device_index);
 var viewer = new cv.NamedWindow('Video', 0);
 
+var nanomsg = require('nanomsg');
+var pub = nanomsg.socket('pub');
+
+var addr = 'tcp://127.0.0.1:7789';
+pub.bind(addr);
+
 var t0=new Date(), t1=t0;
 
 function get_frame() {
@@ -17,6 +23,9 @@ function get_frame() {
     if (im.size()[0] > 0 && im.size()[1] > 0) {
       viewer.show(im);
       console.log("Image displayed");
+      
+      //pub.send("123123");
+      pub.send(JSON.stringify({ a:'to', xy:[0.1,0.2] }));
     }
     else {
       console.log("No Image returned");
