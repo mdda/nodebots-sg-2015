@@ -26,10 +26,10 @@ if(false) {
 
 if(false) {
   for(var pos=0;pos<2.0;pos+=0.02) {
-    console.log(pos.toFixed(2) +" : "+ 
-       pwm_width(pos).toFixed(0) +" "+ 
-       pwm_width(pos+1/3).toFixed(0) +" "+ 
-       pwm_width(pos+2/3).toFixed(0));
+    console.log(pp(pos) +" : "+ 
+       pp(pwm_width(pos),4,0) +" "+ 
+       pp(pwm_width(pos+1/3),4,0) +" "+ 
+       pp(pwm_width(pos+2/3),4,0));
   }
   //console.log(Math.sin(.123));
   //console.log(pwm_width(0));
@@ -98,7 +98,7 @@ board.on("ready", function() {
     console.log("  orientation  : ", this.orientation);
     console.log("--------------------------------------");
   });  
-  accelerometer.on("change-line", function() { // -line
+  accelerometer.on("change", function() { // -line
     console.log("acc:"
       +" xyz:"+p2dp(this.x*20+50, this.y*20+50, this.z*20+50)
       +" pra:"+p2dp(this.pitch*0.4+50, this.roll*0.4+50, this.inclination*0.2+50)
