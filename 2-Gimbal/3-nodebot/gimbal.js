@@ -4,10 +4,10 @@ var five = require("johnny-five");
 var keypress = require("keypress");
 keypress(process.stdin);
 
-var mag=160;  // Can be up to 256 (very maximum...)
+var pwm_mag=160;  // Can be up to 256 (very maximum...)
 function pwm_width(pos) {  // pos is a fraction position, 1 loops around to 0
   //console.log("pwm_width("+pos+")");
-  return (128 + Math.sin(2.0 * pos * 3.14159265) * mag / 2.0) | 0; // integer
+  return (128 + Math.sin(2.0 * pos * 3.14159265) * pwm_mag / 2.0) | 0; // integer
 }
 
 if(false) {
@@ -41,9 +41,11 @@ board.on("ready", function() {
     }
   }
   function motor_pos(m, pos) {
+    var p;
     for(var i=0;i<3;i++) {
-      //console.log("motor_pos("+m[i]+", "+pos+")");
-      board.analogWrite(m[i], pwm_width(pos + i/3));
+      p = pwm_width(pos + i/3);
+      console.log("motor_pos("+m[i]+", "+(p).toFixed(0)+")");
+      board.analogWrite(m[i], p);
     }
   }
 
@@ -90,7 +92,7 @@ board.on("ready", function() {
     );
   });  
   
-  var x=0.00, y=0.0, v=0.03333333333333333333;
+  var x=0.00, y=0.0, v=0.025;
   motor_pos(motorx, x);
   motor_pos(motory, y);
   
