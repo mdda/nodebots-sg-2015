@@ -9,50 +9,56 @@ sub.connect(addr);
 var keypress = require("keypress");
 keypress(process.stdin);
 
+var state = {
+  pins   :[11,10,09, 06,05,03], // x,x,x  y,y,y  Pin numbers
+  written:[0,0,0,0,0,0],        // x,x,x  y,y,y
+  nextpwm:[0,0,0,0,0,0],        // x,x,x  y,y,y
+  origin: [0,0],  // origin_x, origin_y
+  offset: [0,0]   // offset_x, offset_y
+}
+
 var board = new five.Board();
 board.on("ready", function() {
-  function motor_init(m) {
-    for(var i=0;i<3;i++) {
-      //console.log("motor_init("+m[i]+")");
-      board.pinMode(m[i], five.Pin.PWM);
-    }
-  }
-  function motor_reset(m) {
-    for(var i=0;i<3;i++) {
+  function motors_freewheel() {
+    var p=pwm_width(0);
+    for(var k=0;k<state.pins.length;k++) {
       // Since these are all at the same PWM, there is no net current in the windings...
-      board.analogWrite(m[i], pwm_width(0));
+      state.nextpwm[i]=p;
+    }
+  }  
+  function motors_pwmcalc() {
+    var i,j,p;
+    for(i=0; i<2; i++) {   // 0->x 1->y
+      p = state.origin[i] + state.offset[i];
+      for(j=0;j<3; j++) {  // each of 3 pins
+        state.nextpwm[j + i*3] = pwm_width(p + j/3);
+      }
     }
   }
-  function motor_pos(m, pos) {
-    var p;
-    for(var i=0;i<3;i++) {
-      p = pwm_width(pos + i/3);
-      console.log("motor_pos("+pp(m[i],2,0)+", "+pp62(pos+i/3)+" -> "+pp(p,3,0)+")");
-      board.analogWrite(m[i], p);
+  function motors_update() {
+    for(var k=0;k<state.pins.length;k++) {
+      if(state.nextpwm[k] != state.written[k]) { // Only send if different
+        console.log("motor_pos("+pp(state.pin[k],2,0)+", "+pp(state.nextpwm[k],3,0)+")");
+        board.analogWrite(state.pin[k], state.nextpwm[k]);
+        state.written[i]=state.nextpwm[k];
+      }
     }
   }
-  
   console.log("Ready!");
 
+  for(var i=0;i<state.pins.length;i++) {
+    board.pinMode(state.pins[i], five.Pin.PWM);
+    state.written[i]=-1;  // Nothing written yet - will be written soon
+  }
+  motors_freewheel();
+  motors_update();
+  
   var led = new five.Led(8);
   led.blink(100);
 
   console.log("Use Up/Down/Left/Right arrows to control gimbal directly. Space to stop.");
-
-  var motor1 = [11,10,09];    
-  var motor0 = [06,05,03];
-    
-  motor_init(motor1); // Appears to be the one on the -ve side of power in
-  motor_init(motor0); // Appears to be the one on the +ve side of power in
   
-  var motorx = motor1;
-  var motory = motor0;
-  motor_reset(motorx);
-  motor_reset(motory);
-  
-  var x=0.0, y=0.0, v=0.025;
-  motor_pos(motorx, x);
-  motor_pos(motory, y);
+  var origin_jog=[ 0.025, 0.025 ];
   
   process.stdin.resume();
   process.stdin.setEncoding("utf8");
@@ -63,27 +69,28 @@ board.on("ready", function() {
       return;
     }
 
+    var pwm = true;
     if (key.name === "q") {
       console.log("Quitting");
       process.exit();
     } else if (key.name === "up") {
-      y += v;
-      motor_pos(motory, y);
+      state.origin[1] += origin_jog[1];
     } else if (key.name === "down") {
-      y -= v;
-      motor_pos(motory, y);
-    } else if (key.name === "left") {
-      x += v;
-      motor_pos(motorx, x);
+      state.origin[1] -= origin_jog[1];
     } else if (key.name === "right") {
-      x -= v;
-      motor_pos(motorx, x);
+      state.origin[0] += origin_jog[0];
+    } else if (key.name === "left") {
+      state.origin[0] -= origin_jog[0];
     } else if (key.name === "space") {
       console.log("Reset");
-      motor_reset(motorx);
-      motor_reset(motory);
+      motors_freewheel();
+      pwm = false; // Don't recalculate PWMs
     }
-    console.log("(x,y)=("+pp(x,4,2)+","+pp(y,4,2)+")");
+    if(pwm) {
+      //console.log("(x,y)=("+pp(x,4,2)+","+pp(y,4,2)+")");
+      motors_pwmcalc();
+    }
+    motors_update();      
   });
 
   sub.on('data', function (buf) {
@@ -91,10 +98,10 @@ board.on("ready", function() {
     console.log("Executing :", json);
     var a=json.a || '';
     if(a=='to') {
-      x=json.xy[0]; y=json.xy[1];
-      motor_pos(motorx, x);
-      motor_pos(motory, y);
+      state.offset = json.xy;
       console.log("Moved to  :", x, y );
+      motors_pwmcalc();
+      motors_update();      
     }
     
   });
