@@ -56,7 +56,10 @@ im.inRange(lower_threshold, upper_threshold);
     else {
       console.log("No Image returned");
     }
-    viewer.blockingWaitKey(1);
+    var key = viewer.blockingWaitKey(1);
+    //console.log(key);
+    // esc = 27
+    // 1   = 49?
   });
 }
 
