@@ -65,7 +65,7 @@ setInterval(function() {
 }, 50);
 
 
-
+/* Pretty Printing functions */
 function pp(v,width,dp) {
   var s="          "+v.toFixed(dp);
   return s.substr(s.length-width);
@@ -77,3 +77,5 @@ function pp62(v) {
 function p2dp(x,y,z) {
   return "(" + pp(x,4,2) +","+ pp(y,4,2) +","+ pp(y,4,2) +")";
 }
+
+
