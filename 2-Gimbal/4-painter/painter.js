@@ -30,17 +30,17 @@ board.on("ready", function() {
     var i,j,p;
     for(i=0; i<2; i++) {   // 0->x 1->y
       p = state.origin[i] + state.offset[i];
-      for(j=0;j<3; j++) {  // each of 3 pins
+      for(j=0; j<3; j++) {  // each of 3 pins
         state.nextpwm[j + i*3] = pwm_width(p + j/3);
       }
     }
   }
   function motors_update() {
-    for(var k=0;k<state.pins.length;k++) {
+    for(var k=0; k<state.pins.length; k++) {
       if(state.nextpwm[k] != state.written[k]) { // Only send if different
-        console.log("motor_pos("+pp(state.pin[k],2,0)+", "+pp(state.nextpwm[k],3,0)+")");
-        board.analogWrite(state.pin[k], state.nextpwm[k]);
-        state.written[i]=state.nextpwm[k];
+        console.log("motor_pos("+pp(state.pins[k],2,0)+", "+pp(state.nextpwm[k],3,0)+")");
+        board.analogWrite(state.pins[k], state.nextpwm[k]);
+        state.written[k]=state.nextpwm[k];
       }
     }
   }
@@ -77,9 +77,9 @@ board.on("ready", function() {
       state.origin[1] += origin_jog[1];
     } else if (key.name === "down") {
       state.origin[1] -= origin_jog[1];
-    } else if (key.name === "right") {
-      state.origin[0] += origin_jog[0];
     } else if (key.name === "left") {
+      state.origin[0] += origin_jog[0];
+    } else if (key.name === "right") {
       state.origin[0] -= origin_jog[0];
     } else if (key.name === "space") {
       console.log("Reset");
