@@ -35,6 +35,8 @@ Basic scheme (the keystrokes given are on ```spotter.js``` window, unless otherw
 
 * Then press ```1``` on the ```spotter.js``` viewer window
    * This will set the 'spotter origin' (motor-offset=(0,0)) to the location seen
+   * Looking at the 'on wall' trace of the LASER shows that there is significant 'settle time'
+   * But, analysis of the logs shows that movement is quick, but settling is slow...
 
 * Then press ```2``` to do a 'local calibration' for small motor movements
 
