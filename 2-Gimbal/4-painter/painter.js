@@ -36,6 +36,7 @@ board.on("ready", function() {
     }
   }
   function motors_update() {
+    var t0=new Date();
     for(var k=0; k<state.pins.length; k++) {
       if(state.nextpwm[k] != state.written[k]) { // Only send if different
         console.log("motor_pos("+pp(state.pins[k],2,0)+", "+pp(state.nextpwm[k],3,0)+")");
@@ -43,6 +44,7 @@ board.on("ready", function() {
         state.written[k]=state.nextpwm[k];
       }
     }
+    console.log("Update took "+pp(new Date() - t0, 4, 0)+"ms");
   }
   console.log("Ready!");
 
