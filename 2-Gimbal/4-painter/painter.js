@@ -10,9 +10,10 @@ var keypress = require("keypress");
 keypress(process.stdin);
 
 var state = {
-  pins   :[11,10,09, 06,05,03], // x,x,x  y,y,y  Pin numbers
-  written:[0,0,0,0,0,0],        // x,x,x  y,y,y
-  nextpwm:[0,0,0,0,0,0],        // x,x,x  y,y,y
+  pins   :[11,10,9, 6,5,3],     // x,x,x  y,y,y  Pin numbers
+  written:[ 0, 0,0, 0,0,0],        // x,x,x  y,y,y
+  nextpwm:[ 0, 0,0, 0,0,0],        // x,x,x  y,y,y
+  
   origin: [0,0],  // origin_x, origin_y
   offset: [0,0]   // offset_x, offset_y
 }
