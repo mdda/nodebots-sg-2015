@@ -17,3 +17,8 @@ Aims :
 * Do something interesting/alternative with the Gimbal
   - ```4-painter```
 
+
+
+#### Seconday Goal
+
+Present about the project at Hackware v1.0 (Lightning?)
