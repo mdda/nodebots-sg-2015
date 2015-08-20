@@ -21,4 +21,4 @@ Aims :
 
 #### Seconday Goal
 
-Present about the project at Hackware v1.0 (Lightning?)
+Do a lightning talk about the project at Hackware v1.0 on 26-Aug-2015.
