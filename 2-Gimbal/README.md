@@ -26,21 +26,37 @@ Do a lightning talk about the project at Hackware v1.0 on 26-Aug-2015.
 Can do : 
 
 *  Describe origins of 'robot'
+   +   Quadcopter
+   +   Pricing, features
+   +   Nodebot-able Arduino-a-like
 *  Describe what can be done
+   +   Robot itself
+   +   nodejs sending, nodejs opencv (zeromq)
+   +   Problems : Cogging, twanging, etc
+
 
 Demonstrate :
 
 *  moving around using cursor keys
 *  Coordinate updates of webcam
 
+
 Would like (time permitting) :
 
-*  Calibration mode
-*  Centering mode
+*  Calibration mode (small moves)
+*  Centering mode (bigger moves, and adjustments)
+*  Observation lag calibration mode
 *  Circling mode
 *  Hello Kitty mode
 
-To accomplish that, require :
 
-*
+To accomplish that (ideally) require :
+
+*  'mode' defines goal state(s) for movement
+*  Initial 'self model' must be calibrated
+*  Model maps 'self state', 'external observations' and 'desired state' to 'control signals'
+
+But, this can be simplistically acheived by :
+
+*  ((Thinking))
 
