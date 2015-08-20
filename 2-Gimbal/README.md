@@ -22,3 +22,25 @@ Aims :
 #### Seconday Goal
 
 Do a lightning talk about the project at Hackware v1.0 on 26-Aug-2015.
+
+Can do : 
+
+*  Describe origins of 'robot'
+*  Describe what can be done
+
+Demonstrate :
+
+*  moving around using cursor keys
+*  Coordinate updates of webcam
+
+Would like (time permitting) :
+
+*  Calibration mode
+*  Centering mode
+*  Circling mode
+*  Hello Kitty mode
+
+To accomplish that, require :
+
+*
+
