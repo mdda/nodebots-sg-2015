@@ -58,5 +58,12 @@ To accomplish that (ideally) require :
 
 But, this can be simplistically acheived by :
 
-*  ((Thinking))
+*  Calibration : Perform given sequence of moves and capture basic dx, dy, timescale sensitivities
+   +   Track location after each move and Wait for settle after each one (+/-1 pixel dwell for 100ms?)
+   +   Perform move command, and then capture opencv output to timestamped series
+   +   After each addition, check whether we should be in our next 'state'
+   +   ?States will be 'wait until location stable', 'wait until not at()', etc...
+   +   Or : Sequence of commands will be actions() which can include move commands and wait commands
+   +   
+
 
