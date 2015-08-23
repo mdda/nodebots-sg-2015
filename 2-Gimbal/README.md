@@ -65,8 +65,14 @@ But, this can be simplistically acheived by :
    +   ?States will be 'wait until location stable', 'wait until not at()', etc...
    +   Or : Sequence of commands will be actions() which can include move commands and wait commands
 
-So : Most logical programming enviroment would have 3 processes : OpenCV 'environment', Controller and Robot actions (which are simple position controls - though could reasonable be velocity or accelerations, or velocity/position limits with accelerations, etc).
+So : Most logical programming enviroment would have 3 processes : 
 
-
+*  OpenCV 'environment'
+*  Controller; and 
+*  Robot actions - which would be :
+   +  simple position controls 
+   +  or maybe velocity 
+   +  or maybe accelerations
+   +  or velocity/position limits with accelerations, etc (this may make the action space safer to explore, but bigger)
 
 
