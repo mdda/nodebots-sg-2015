@@ -64,6 +64,9 @@ But, this can be simplistically acheived by :
    +   After each addition, check whether we should be in our next 'state'
    +   ?States will be 'wait until location stable', 'wait until not at()', etc...
    +   Or : Sequence of commands will be actions() which can include move commands and wait commands
-   +   
+
+So : Most logical programming enviroment would have 3 processes : OpenCV 'environment', Controller and Robot actions (which are simple position controls - though could reasonable be velocity or accelerations, or velocity/position limits with accelerations, etc).
+
+
 
 
