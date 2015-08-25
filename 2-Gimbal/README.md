@@ -19,7 +19,7 @@ Aims :
 
 
 
-#### Seconday Goal
+#### Indepent Goal
 
 Do a lightning talk about the project at Hackware v1.0 on 26-Aug-2015.
 
@@ -75,4 +75,6 @@ So : Most logical programming enviroment would have 3 processes :
    +  or maybe accelerations
    +  or velocity/position limits with accelerations, etc (this may make the action space safer to explore, but bigger)
 
+Maybe, OTOH, the better controller output would be a position vs time graph, so that the robot actions (which would be only sampled intermittently, due to frequency of updates, etc) could be interpolated when the next action is desired.  This would avoid having to do synchronous / timing sensitive loops.  
 
+Another rationale for this idea is that (from observation) the webcam state observations are very laggy (compared to the potential movement speed of the motors), so it would be good to have an internal state model that's continuous, which would allow de-lagged state measurements to feedback into estimates of history.
