@@ -16,12 +16,16 @@ var background=undefined;
 
 function get_frame() {
   var t1=new Date();
+  console.log('New grab : '+(t1 - t0)+"ms since last");
+  t0=t1;
+  
+  // Call the webcam reader function : 
   webcam.read(function(err, im) {
     if (err) throw err;
     var sz = im.size();
     
-    var t1=new Date();
-    console.log('Grabbed image in : '+(t2 - t1)+"ms, shape:", sz);
+    var t_acq = new Date();
+    console.log(' Grabbed image in : '+(t_acq - t1)+"ms, shape:", sz);
     
     if (sz[0] > 0 && sz[1] > 0) {
       //viewer.show(im);
@@ -30,7 +34,7 @@ function get_frame() {
       //processed.convertHSVscale();
       
       var channel = processed.split();
-      console.log("Channel.length : ", channel.length);
+      console.log("   Channel.length : ", channel.length);
       // 0=Blue, 1=Green, 2=Red (?)
       // H S V
       
@@ -42,40 +46,49 @@ function get_frame() {
       im.inRange(lower_threshold, upper_threshold);
       */  
       
-      var chan=channel[0];
-      if(background) {
-        chan = chan - background;
-      }
-      
       // Want possibility of capturing a background image to subtract out of 
       // subsequent frames...
       
-      var o = chan.minMaxLoc();
-      console.log(o);
+      var chan=channel[0];
+      var disp = chan.copy();
       
+      if(background) {
+        // https://github.com/peterbraden/node-opencv/blob/master/src/Matrix.cc
+        chan.addWeighted(chan, 1.0, background, -1.0);
+      }
+      
+      var o = chan.minMaxLoc();
+
+      var t_processed = new Date();
+      console.log(' Processed image '
+          +(background?'with background ':'')
+          +"in : "+(t_processed - t_acq)+"ms, loc:", o);
+
       // Alternative : http://stackoverflow.com/questions/4010036/laser-light-detection-with-opencv-and-c
       // http://docs.opencv.org/2.4.9/modules/core/doc/operations_on_arrays.html?highlight=minmaxloc#inrange
       
       var rsize=20;
-      var disp = chan.copy();
       disp.rectangle( [o.maxLoc.x-rsize/2, o.maxLoc.y-rsize/2], [rsize, rsize], 200, 1);
       
       viewer.show(disp);
+
+      var t_displayed = new Date();
+      console.log(' Displayed image in : '+(t_displayed - t_processed)+"ms");
       
       //pub.send(JSON.stringify({ a:'to', xy:[0.1,0.2] }));
     }
     else {
-      console.log("No Image returned");
+      console.log(" No Image returned");
     }
     
     var key = viewer.blockingWaitKey(1);
-    //console.log(key);
+    console.log(" Key Code : "+key);
     /// or : see onKeyDown column of http://www.asquare.net/javascript/tests/KeyCode.html
     // 27='esc', 49='1'
-    if(66 == key) { // 66='b'
+    if(98 == key) { // 98='b'
       background = chan.copy();
     }
-    if(67 == key) { // 67='c'
+    if(99 == key) { // 99='c'
       background = undefined;
     }
   });
