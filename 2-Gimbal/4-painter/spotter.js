@@ -12,18 +12,21 @@ pub.bind(addr);
 
 var t0=new Date(), t1=t0;
 
+var background=undefined;
+
 function get_frame() {
+  var t1=new Date();
   webcam.read(function(err, im) {
     if (err) throw err;
+    var sz = im.size();
     
-    t2=new Date();
-    console.log(im.size(), (t2 - t1));
-    t1=t2;
+    var t1=new Date();
+    console.log('Grabbed image in : '+(t2 - t1)+"ms, shape:", sz);
     
-    if (im.size()[0] > 0 && im.size()[1] > 0) {
+    if (sz[0] > 0 && sz[1] > 0) {
       //viewer.show(im);
       //console.log("Image displayed");
-      var processed = im.copy();
+      var processed = im.copy();  // Raw is BGR (~ RGB data)
       //processed.convertHSVscale();
       
       var channel = processed.split();
@@ -31,15 +34,22 @@ function get_frame() {
       // 0=Blue, 1=Green, 2=Red (?)
       // H S V
       
-/*
-// (B)lue, (G)reen, (R)ed
-var lower_threshold = [46, 57, 83];
-var upper_threshold = [80, 96, 115];
+      /*
+      // (B)lue, (G)reen, (R)ed
+      var lower_threshold = [46, 57, 83];
+      var upper_threshold = [80, 96, 115];
 
-im.inRange(lower_threshold, upper_threshold);
-*/  
+      im.inRange(lower_threshold, upper_threshold);
+      */  
       
       var chan=channel[0];
+      if(background) {
+        chan = chan - background;
+      }
+      
+      // Want possibility of capturing a background image to subtract out of 
+      // subsequent frames...
+      
       var o = chan.minMaxLoc();
       console.log(o);
       
@@ -47,19 +57,27 @@ im.inRange(lower_threshold, upper_threshold);
       // http://docs.opencv.org/2.4.9/modules/core/doc/operations_on_arrays.html?highlight=minmaxloc#inrange
       
       var rsize=20;
-      chan.rectangle( [o.maxLoc.x-rsize/2, o.maxLoc.y-rsize/2], [rsize, rsize], 200, 1);
+      var disp = chan.copy();
+      disp.rectangle( [o.maxLoc.x-rsize/2, o.maxLoc.y-rsize/2], [rsize, rsize], 200, 1);
       
-      viewer.show(chan);
+      viewer.show(disp);
       
       //pub.send(JSON.stringify({ a:'to', xy:[0.1,0.2] }));
     }
     else {
       console.log("No Image returned");
     }
+    
     var key = viewer.blockingWaitKey(1);
     //console.log(key);
-    // esc = 27
-    // 1   = 49?
+    /// or : see onKeyDown column of http://www.asquare.net/javascript/tests/KeyCode.html
+    // 27='esc', 49='1'
+    if(66 == key) { // 66='b'
+      background = chan.copy();
+    }
+    if(67 == key) { // 67='c'
+      background = undefined;
+    }
   });
 }
 
