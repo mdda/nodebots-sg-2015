@@ -19,11 +19,11 @@ Aims :
 
 
 
-#### Indepent Goal
+#### Mid-way Lightning Talk
 
-Do a lightning talk about the project at Hackware v1.0 on 26-Aug-2015.
+A lightning talk about the project was made at at (Hackware v1.0 on 26-Aug-2015 in Singapore](http://www.meetup.com/Hackware/events/223761435).
 
-Can do : 
+Brief outline : 
 
 *  Describe origins of 'robot'
    +   Quadcopter
@@ -40,6 +40,7 @@ Demonstrate :
 *  moving around using cursor keys
 *  Coordinate updates of webcam
 
+### Future Plans
 
 Would like (time permitting) :
 
