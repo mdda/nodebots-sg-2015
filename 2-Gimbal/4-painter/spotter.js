@@ -24,6 +24,7 @@ function get_frame() {
     if (err) throw err;
     var sz = im.size();
     
+    process.stdout.write('\033c');
     var t_acq = new Date();
     console.log(' Grabbed image in : '+(t_acq - t1)+"ms, shape:", sz);
     
@@ -85,18 +86,21 @@ function get_frame() {
     console.log(" Key Code : "+key);
     /// or : see onKeyDown column of http://www.asquare.net/javascript/tests/KeyCode.html
     // 27='esc', 49='1'
-    if(98 == key) { // 98='b'
+    if(98 == key) { // 'b'
       background = chan.copy();
     }
-    if(99 == key) { // 99='c'
+    if(99 == key) { // 'c'
       background = undefined;
+    }
+    if(27 == key) { // 'esc'
+      process.exit(1);
     }
   });
 }
 
 setInterval(function() {
   get_frame();
-}, 50);
+}, 80);
 
 
 /* Pretty Printing functions */

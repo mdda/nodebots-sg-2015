@@ -22,9 +22,9 @@ var board = new five.Board();
 board.on("ready", function() {
   function motors_freewheel() {
     var p=pwm_width(0);
-    for(var k=0;k<state.pins.length;k++) {
+    for(var k=0; k<state.pins.length; k++) {
       // Since these are all at the same PWM, there is no net current in the windings...
-      state.nextpwm[i]=p;
+      state.nextpwm[k]=p;
     }
   }  
   function motors_pwmcalc() {
@@ -49,9 +49,9 @@ board.on("ready", function() {
   }
   console.log("Ready!");
 
-  for(var i=0;i<state.pins.length;i++) {
+  for(var i=0; i<state.pins.length; i++) {
     board.pinMode(state.pins[i], five.Pin.PWM);
-    state.written[i]=-1;  // Nothing written yet - will be written soon
+    state.written[i] = -1;  // Nothing written yet - will be written soon
   }
   motors_freewheel();
   motors_update();
