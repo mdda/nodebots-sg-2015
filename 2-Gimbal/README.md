@@ -37,8 +37,8 @@ Brief outline :
 
 Demonstrate :
 
-*  moving around using cursor keys
-*  Coordinate updates of webcam
+*  move gimbal stage around using cursor keys
+*  coordinate updates of LASER-pointer, as seen by OpenCV through webcam
 
 ### Future Plans
 
@@ -48,7 +48,7 @@ Would like (time permitting) :
 *  Centering mode (bigger moves, and adjustments)
 *  Observation lag calibration mode
 *  Circling mode
-*  Hello Kitty mode
+*  Hello Kitty mode (or Heart, etc)
 
 
 To accomplish that (ideally) require :
@@ -76,6 +76,11 @@ So : Most logical programming enviroment would have 3 processes :
    +  or maybe accelerations
    +  or velocity/position limits with accelerations, etc (this may make the action space safer to explore, but bigger)
 
-Maybe, OTOH, the better controller output would be a position vs time graph, so that the robot actions (which would be only sampled intermittently, due to frequency of updates, etc) could be interpolated when the next action is desired.  This would avoid having to do synchronous / timing sensitive loops.  
+#### Controller outputs
 
-Another rationale for this idea is that (from observation) the webcam state observations are very laggy (compared to the potential movement speed of the motors), so it would be good to have an internal state model that's continuous, which would allow de-lagged state measurements to feedback into estimates of history.
+Thinking bigger-picture, the better controller output could be a position vs time graph, so that the robot actions (which would be only sampled intermittently, due to frequency of updates, etc) could be interpolated when the next action is desired.  This would avoid having to do synchronous / timing sensitive loops.  
+
+Another rationale for this idea is that (having played with the system a little) the webcam state observations are very laggy (compared to the potential movement speed of the motors), so it would be good to have an internal state model that's continuous, which would allow de-lagged state measurements to be fed back so that the state history can be re-estimated.
+
+[Online course that appears related](http://www.computervisiontalks.com/tag/rl-course/)
+
